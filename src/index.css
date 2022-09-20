@@ -1,4 +1,20 @@
+:root {
+  --accent: #44d7b6;
+  /* --accentHover: ; */
+}
+
 body {
   background-color: #151515;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
+}
+
+a,
+a:visited {
+  color: var(--accent);
+  opacity: 0.8;
+  transition: opacity 150ms;
+}
+
+a:hover {
+  opacity: 1;
 }

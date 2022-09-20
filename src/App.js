@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { useLocalStorage } from "./useLocalStorage";
 
 function App() {
-  const [cents, setCents] = useState(0);
+  const [cents, setCents] = useLocalStorage("cents", 0);
 
   const addCents = (toAdd) => {
     const newVal = cents + toAdd;
@@ -13,9 +14,16 @@ function App() {
     document.title = `${cents}¢`;
   }, [cents]);
 
+  const wholecents = cents.toString().split(".")[0];
+  const partialcents = cents.toString().split(".")[1];
+
   return (
     <div className="App">
-      <Cents>{cents.toFixed(0)}¢</Cents>
+      <Cents>
+        {wholecents}
+        {partialcents ? <PartialCents>.{partialcents}</PartialCents> : null}
+        <CentsSign>¢</CentsSign>
+      </Cents>
 
       <Buttons>
         <Button onClick={() => addCents(0.5)}>Like - 0.5¢</Button>
@@ -24,6 +32,23 @@ function App() {
         <Button onClick={() => addCents(25)}>Post - 25¢</Button>
         <Clear onClick={() => setCents(0)}>Clear</Clear>
       </Buttons>
+
+      <Links>
+        <a
+          href="https://www.instagram.com/explore/tags/realestatephotographer/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          #realestatephotographer
+        </a>
+        <a
+          href="https://www.instagram.com/explore/tags/realestatephotography/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          #realestatephotography
+        </a>
+      </Links>
     </div>
   );
 }
@@ -36,7 +61,19 @@ const Cents = styled.div`
   font-weight: 900;
   font-size: 140px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
+
+const PartialCents = styled.div`
+  font-size: 60px;
+  padding-top: 55px;
+  opacity: 0.8;
+  margin-right: 5px;
+`;
+
+const CentsSign = styled.div``;
 
 const Buttons = styled.div`
   margin: 30px auto 0;
@@ -54,20 +91,24 @@ const Button = styled.button`
   font-size: 23px;
   color: #ffffff;
   text-align: left;
-  background: #25413a;
+  background: #44d7b6bd;
   box-shadow: 0 2px 7px 0 #000000;
   border-radius: 30px;
   height: 58px;
   width: 320px;
   border: none;
-  transition: background-color 200ms;
+  transition: background-color 200ms, transform 200ms;
 
   &:hover {
-    background-color: #37ac92;
+    background-color: var(--accent);
   }
 
   &:focus {
     outline: none;
+  }
+
+  &:active {
+    transform: scale(0.97);
   }
 `;
 
@@ -80,5 +121,15 @@ const Clear = styled(Button)`
 
   &:focus {
     outline: none;
+  }
+`;
+
+const Links = styled.div`
+  text-align: center;
+  margin-top: 60px;
+
+  a {
+    display: block;
+    margin-bottom: 10px;
   }
 `;
